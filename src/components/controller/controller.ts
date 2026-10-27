@@ -22,6 +22,10 @@ class AppController extends AppLoader {
                 const sourceId = target.getAttribute('data-source-id');
                 if (sourceId && newsContainer.getAttribute('data-source') !== sourceId) {
                     newsContainer.setAttribute('data-source', sourceId);
+                    newsContainer
+                        .querySelectorAll('.source__item[aria-pressed="true"]')
+                        .forEach((item) => item.setAttribute('aria-pressed', 'false'));
+                    target.setAttribute('aria-pressed', 'true');
                     super.getResp<ArticlesResponse>(
                         {
                             endpoint: Endpoint.Everything,
