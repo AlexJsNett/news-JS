@@ -7,9 +7,10 @@ class App {
     private readonly view: AppView = new AppView();
 
     public start(): void {
-        getElement(document, '.sources').addEventListener('click', (e) =>
-            this.controller.getNews(e, (data) => this.view.drawNews(data))
-        );
+        getElement(document, '.sources').addEventListener('click', (e) => {
+            this.controller.getNews(e, (data) => this.view.drawNews(data));
+            this.view.collapseSources();
+        });
         const search = getElement<HTMLInputElement>(document, '.sources-search__input');
         search.addEventListener('input', () => this.view.filterSources(search.value));
         search.addEventListener('keydown', (e) => {

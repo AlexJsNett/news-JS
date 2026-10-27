@@ -16,6 +16,10 @@ export class AppView {
         this.sources.draw(values);
     }
 
+    public collapseSources(): void {
+        this.sources.collapse();
+    }
+
     public filterSources(query: string): void {
         this.sources.filter(query);
     }
