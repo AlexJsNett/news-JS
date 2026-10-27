@@ -1,6 +1,16 @@
-import { Callback, HttpMethod, QueryOptions, RequestParams } from '../../types';
+import { Callback, Endpoint, HttpMethod, QueryOptions, RequestParams } from '../../types';
+import ResponseCache from '../../utils/cache';
+
+const MINUTE_MS = 60 * 1000;
+
+const CACHE_TTL_MS: Readonly<Record<Endpoint, number>> = {
+    [Endpoint.Sources]: 60 * MINUTE_MS,
+    [Endpoint.Everything]: 10 * MINUTE_MS,
+};
 
 class Loader {
+    private readonly cache = new ResponseCache('news-cache:');
+
     constructor(
         private readonly baseLink: string,
         private readonly options: Readonly<Pick<QueryOptions, 'apiKey'>>
@@ -37,16 +47,33 @@ class Loader {
         return `${this.baseLink}${endpoint}?${params.toString()}`;
     }
 
+    private makeCacheKey(options: Partial<QueryOptions>, endpoint: Endpoint): string {
+        const { sources = '' } = options;
+
+        return `${endpoint}?sources=${sources}`;
+    }
+
     private load<T>(
         method: HttpMethod,
-        endpoint: string,
+        endpoint: Endpoint,
         callback: Callback<T>,
         options: Partial<QueryOptions> = {}
     ): void {
+        const cacheKey = this.makeCacheKey(options, endpoint);
+        const cached = this.cache.get<T>(cacheKey, CACHE_TTL_MS[endpoint]);
+
+        if (cached !== null) {
+            callback(cached);
+            return;
+        }
+
         fetch(this.makeUrl(options, endpoint), { method })
             .then(this.errorHandler)
             .then((res): Promise<T> => res.json())
-            .then((data) => callback(data))
+            .then((data) => {
+                this.cache.set(cacheKey, data);
+                callback(data);
+            })
             .catch((err) => console.error(err));
     }
 }
