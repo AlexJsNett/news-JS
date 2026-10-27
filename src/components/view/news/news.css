@@ -1,8 +1,14 @@
+.news {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding-bottom: 1rem;
+}
+
 .news__item {
     display: flex;
     flex-direction: column;
-    margin: 1rem auto;
-    margin-bottom: 1.6%;
+    margin: 0;
     background: #fff;
     color: #333;
     line-height: 1.4;
@@ -62,7 +68,8 @@
 .news__item .news__description h2 {
     line-height: 1;
     margin: 0;
-    font-size: 1.7rem;
+    font-size: clamp(1.25rem, 4vw, 1.7rem);
+    overflow-wrap: anywhere;
 }
 
 .news__item .news__description h3 {
@@ -124,7 +131,6 @@
 @media (min-width: 640px) {
     .news__item {
         flex-direction: row;
-        max-width: 700px;
     }
 
     .news__item .news__meta {
@@ -162,5 +168,11 @@
 
     .news__item.alt .news__meta-details {
         padding-left: 25px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .news {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
