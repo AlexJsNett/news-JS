@@ -1,11 +1,41 @@
 .sources {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
+    justify-content: center;
     width: 100%;
-    height: 120px;
-    overflow: auto;
+    padding: 0.5rem 0;
     align-items: center;
-    font: 300 1em 'Fira Sans', sans-serif;
+    font:
+        300 1em 'Fira Sans',
+        sans-serif;
+}
+
+.sources[data-collapsed='true'] {
+    max-height: 12.5rem;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent);
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent);
+}
+
+.sources-toggle {
+    display: block;
+    margin: 0.5rem auto 1rem;
+    padding: 0.6em 1.5em;
+    border: 2px solid #30c5ff;
+    border-radius: 999px;
+    background: none;
+    color: #70d6ff;
+    font: inherit;
+    cursor: pointer;
+}
+
+.sources-toggle:hover {
+    border-color: #3fcc59;
+    color: #69db7e;
+}
+
+.sources-toggle[hidden] {
+    display: none;
 }
 
 .source__item {
@@ -13,22 +43,77 @@
     border: 2px solid #30c5ff;
     font: inherit;
     line-height: 1;
-    margin: 0.5em;
-    padding: 1em 2em;
+    margin: 0.3em;
+    padding: 0.6em 0.9em;
+    font-size: 0.9em;
     color: #70d6ff;
     transition: 0.25s;
     cursor: pointer;
 }
 
 .source__item:hover,
-.source__item:focus {
+.source__item:focus-visible {
     border-color: #3fcc59;
     color: #69db7e;
     box-shadow: 0 0.5em 0.5em -0.4em #3fcc59;
     transform: translateY(-0.25em);
 }
 
+.source__item[aria-pressed='true'] {
+    border-color: #3fcc59;
+    box-shadow: inset 0 -4px 0 #3fcc59;
+    background: rgba(63, 204, 89, 0.15);
+    color: #69db7e;
+}
+
 .source__item-name {
     font-weight: 400;
     white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+    .source__item {
+        margin: 0.5em;
+        padding: 1em 2em;
+        font-size: 1em;
+    }
+
+    .sources[data-collapsed='true'] {
+        max-height: 9rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .source__item:hover,
+    .source__item:focus-visible {
+        transform: none;
+    }
+}
+
+.sources-search {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0.5rem 0;
+}
+
+.sources-search__input {
+    width: 100%;
+    padding: 0.75em 1em;
+    border: 2px solid #30c5ff;
+    border-radius: 999px;
+    background: #20222a;
+    color: #fff;
+    font: inherit;
+}
+
+.sources-search__input::placeholder {
+    color: #9a9ca3;
+}
+
+.sources-search__status {
+    min-height: 1.5em;
+    margin: 0.5rem 0 0;
+    text-align: center;
+    color: #9a9ca3;
+    font-size: 0.9rem;
 }

@@ -9,21 +9,40 @@
     <body>
         <header>
             <h1>News Portal</h1>
+            <p class="header__subtitle">Top stories from hundreds of sources</p>
         </header>
         <main>
+            <div class="sources-search">
+                <input
+                    class="sources-search__input"
+                    type="search"
+                    placeholder="Search sources (press / to focus)"
+                    aria-label="Search sources"
+                    autocomplete="off"
+                />
+                <p class="sources-search__status" role="status"></p>
+            </div>
             <div class="sources buttons"></div>
-            <div class="news"></div>
+            <button class="sources-toggle" type="button" aria-expanded="false" hidden></button>
+            <div class="news">
+                <p class="news__message" role="status">Select a source to read the latest news</p>
+            </div>
         </main>
         <footer>
-            <p class="copyright">
-                Copyright <a href="https://newsapi.org">NewsAPI</a>
-            </p>
+            <a class="footer__github" href="https://github.com/AlexJsNett" target="_blank" rel="noopener noreferrer"
+                >AlexJsNett</a
+            >
+            <span class="footer__year">2026</span>
+            <span>Data by <a href="https://newsapi.org" target="_blank" rel="noopener noreferrer">NewsAPI</a></span>
+            <a class="footer__course" href="https://rs.school/courses/javascript" target="_blank" rel="noopener noreferrer">
+                <img src="assets/rss-logo.svg" alt="RS School logo" width="40" height="40" />
+            </a>
         </footer>
 
         <template id="sourceItemTemp">
-            <div class="source__item">
+            <button class="source__item" type="button" aria-pressed="false">
                 <span class="source__item-name"></span>
-            </div>
+            </button>
         </template>
 
         <template id="newsItemTemp">
