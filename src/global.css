@@ -29,6 +29,18 @@ header h1 {
     font-weight: 800;
 }
 
+header .header__subtitle {
+    margin: 0 0 8px;
+    color: #9a9ca3;
+    font-size: clamp(0.9rem, 3vw, 1.1rem);
+}
+
+a:focus-visible,
+button:focus-visible {
+    outline: 3px solid #70d6ff;
+    outline-offset: 3px;
+}
+
 footer {
     display: flex;
     flex-wrap: wrap;
