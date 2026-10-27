@@ -1,16 +1,41 @@
 .sources {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
+    justify-content: center;
     width: 100%;
-    min-height: 120px;
-    overflow-x: auto;
-    scroll-snap-type: x proximity;
-    scrollbar-width: thin;
-    scrollbar-color: #30c5ff #20222a;
+    padding: 0.5rem 0;
     align-items: center;
     font:
         300 1em 'Fira Sans',
         sans-serif;
+}
+
+.sources[data-collapsed='true'] {
+    max-height: 12.5rem;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent);
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent);
+}
+
+.sources-toggle {
+    display: block;
+    margin: 0.5rem auto 1rem;
+    padding: 0.6em 1.5em;
+    border: 2px solid #30c5ff;
+    border-radius: 999px;
+    background: none;
+    color: #70d6ff;
+    font: inherit;
+    cursor: pointer;
+}
+
+.sources-toggle:hover {
+    border-color: #3fcc59;
+    color: #69db7e;
+}
+
+.sources-toggle[hidden] {
+    display: none;
 }
 
 .source__item {
@@ -18,10 +43,9 @@
     border: 2px solid #30c5ff;
     font: inherit;
     line-height: 1;
-    flex: 0 0 auto;
-    margin: 0.5em;
-    padding: 1em 2em;
-    scroll-snap-align: start;
+    margin: 0.3em;
+    padding: 0.6em 0.9em;
+    font-size: 0.9em;
     color: #70d6ff;
     transition: 0.25s;
     cursor: pointer;
@@ -48,14 +72,14 @@
 }
 
 @media (min-width: 768px) {
-    .sources {
-        flex-wrap: wrap;
-        justify-content: center;
-        max-height: 220px;
-        margin-bottom: 1rem;
-        padding: 1rem 0;
-        overflow-x: hidden;
-        overflow-y: auto;
+    .source__item {
+        margin: 0.5em;
+        padding: 1em 2em;
+        font-size: 1em;
+    }
+
+    .sources[data-collapsed='true'] {
+        max-height: 9rem;
     }
 }
 
@@ -92,16 +116,4 @@
     text-align: center;
     color: #9a9ca3;
     font-size: 0.9rem;
-}
-
-.sources[data-more='true'] {
-    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 56px), transparent);
-    mask-image: linear-gradient(to right, #000 calc(100% - 56px), transparent);
-}
-
-@media (min-width: 768px) {
-    .sources[data-more='true'] {
-        -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 48px), transparent);
-        mask-image: linear-gradient(to bottom, #000 calc(100% - 48px), transparent);
-    }
 }

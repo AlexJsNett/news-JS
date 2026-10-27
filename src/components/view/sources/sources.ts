@@ -2,14 +2,19 @@ import './sources.css';
 import { NewsSource } from '../../../types';
 import { getElement } from '../../../utils/dom';
 
-const SCROLL_EDGE_PX = 4;
-
 class Sources {
     private items: HTMLElement[] = [];
 
+    private query = '';
+
+    private isExpanded = false;
+
     constructor() {
-        window.addEventListener('resize', () => this.updateScrollHint());
-        getElement(document, '.sources').addEventListener('scroll', () => this.updateScrollHint(), { passive: true });
+        getElement(document, '.sources-toggle').addEventListener('click', () => {
+            this.isExpanded = !this.isExpanded;
+            this.updateLayout();
+        });
+        window.addEventListener('resize', () => this.updateLayout());
     }
 
     public draw(data: NewsSource[]): void {
@@ -31,8 +36,14 @@ class Sources {
         this.filter(getElement<HTMLInputElement>(document, '.sources-search__input').value);
     }
 
+    public collapse(): void {
+        this.isExpanded = false;
+        this.updateLayout();
+    }
+
     public filter(query: string): void {
-        const normalized = query.trim().toLowerCase();
+        this.query = query.trim();
+        const normalized = this.query.toLowerCase();
         let visible = 0;
 
         this.items.forEach((item) => {
@@ -42,16 +53,26 @@ class Sources {
             if (isMatch) visible += 1;
         });
 
-        getElement(document, '.sources-search__status').textContent = this.getStatusText(visible, query.trim());
-        this.updateScrollHint();
+        getElement(document, '.sources-search__status').textContent = this.getStatusText(visible, this.query);
+        this.updateLayout();
     }
 
-    private updateScrollHint(): void {
+    private updateLayout(): void {
         const container = getElement(document, '.sources');
-        const hasMoreRight = container.scrollLeft + container.clientWidth < container.scrollWidth - SCROLL_EDGE_PX;
-        const hasMoreBelow = container.scrollTop + container.clientHeight < container.scrollHeight - SCROLL_EDGE_PX;
+        const toggle = getElement<HTMLButtonElement>(document, '.sources-toggle');
+        const isSearching = this.query !== '';
+        const isCollapsed = !this.isExpanded && !isSearching;
 
-        container.dataset.more = String(hasMoreRight || hasMoreBelow);
+        container.dataset.collapsed = String(isCollapsed);
+
+        if (isSearching) {
+            toggle.hidden = true;
+            return;
+        }
+
+        toggle.hidden = isCollapsed && container.scrollHeight <= container.clientHeight + 1;
+        toggle.textContent = this.isExpanded ? 'Show fewer' : `Show all ${this.items.length} sources`;
+        toggle.setAttribute('aria-expanded', String(this.isExpanded));
     }
 
     private getStatusText(visible: number, query: string): string {
