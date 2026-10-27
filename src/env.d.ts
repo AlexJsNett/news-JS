@@ -4,3 +4,5 @@ declare const process: {
         readonly API_KEY: string;
     };
 };
+
+declare module '*.css';
