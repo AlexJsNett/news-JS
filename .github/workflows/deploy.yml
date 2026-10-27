@@ -1,0 +1,33 @@
+name: Deploy to GitHub Pages
+
+on:
+    push:
+        branches: [news-api]
+    workflow_dispatch:
+
+permissions:
+    contents: write
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: npm
+            - run: npm ci
+            - run: npm run lint
+            - run: npm run typecheck
+            - name: Create .env
+              env:
+                  API_KEY: ${{ secrets.API_KEY }}
+              run: |
+                  test -n "$API_KEY" || { echo "Secret API_KEY is not set"; exit 1; }
+                  printf 'API_URL=https://rss-news-api.onrender.com/\nAPI_KEY=%s\n' "$API_KEY" > .env
+            - run: npm run build
+            - uses: peaceiris/actions-gh-pages@v4
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  publish_dir: ./dist
