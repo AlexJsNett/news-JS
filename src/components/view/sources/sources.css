@@ -37,7 +37,9 @@
     .sources {
         flex-wrap: wrap;
         justify-content: center;
+        max-height: 220px;
         padding: 1rem 0;
-        overflow-x: visible;
+        overflow-x: hidden;
+        overflow-y: auto;
     }
 }
