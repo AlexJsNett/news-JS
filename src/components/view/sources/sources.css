@@ -6,7 +6,9 @@
     overflow-x: auto;
     scroll-snap-type: x proximity;
     align-items: center;
-    font: 300 1em 'Fira Sans', sans-serif;
+    font:
+        300 1em 'Fira Sans',
+        sans-serif;
 }
 
 .source__item {
@@ -60,4 +62,32 @@
     .source__item:focus-visible {
         transform: none;
     }
+}
+
+.sources-search {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0.5rem 0;
+}
+
+.sources-search__input {
+    width: 100%;
+    padding: 0.75em 1em;
+    border: 2px solid #30c5ff;
+    border-radius: 999px;
+    background: #20222a;
+    color: #fff;
+    font: inherit;
+}
+
+.sources-search__input::placeholder {
+    color: #9a9ca3;
+}
+
+.sources-search__status {
+    min-height: 1.5em;
+    margin: 0.5rem 0 0;
+    text-align: center;
+    color: #9a9ca3;
+    font-size: 0.9rem;
 }

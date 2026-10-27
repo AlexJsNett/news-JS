@@ -10,6 +10,9 @@ class App {
         getElement(document, '.sources').addEventListener('click', (e) =>
             this.controller.getNews(e, (data) => this.view.drawNews(data))
         );
+        const search = getElement<HTMLInputElement>(document, '.sources-search__input');
+        search.addEventListener('input', () => this.view.filterSources(search.value));
+
         this.controller.getSources((data) => this.view.drawSources(data));
     }
 }

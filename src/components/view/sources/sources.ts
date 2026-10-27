@@ -3,20 +3,47 @@ import { NewsSource } from '../../../types';
 import { getElement } from '../../../utils/dom';
 
 class Sources {
+    private items: HTMLElement[] = [];
+
     public draw(data: NewsSource[]): void {
         const fragment = document.createDocumentFragment();
         const sourceItemTemp = getElement<HTMLTemplateElement>(document, '#sourceItemTemp');
 
         data.forEach((item) => {
             const sourceClone = sourceItemTemp.content.cloneNode(true) as DocumentFragment;
+            const sourceItem = getElement(sourceClone, '.source__item');
 
             getElement(sourceClone, '.source__item-name').textContent = item.name;
-            getElement(sourceClone, '.source__item').setAttribute('data-source-id', item.id);
+            sourceItem.setAttribute('data-source-id', item.id);
 
+            this.items.push(sourceItem);
             fragment.append(sourceClone);
         });
 
         getElement(document, '.sources').append(fragment);
+        this.filter(getElement<HTMLInputElement>(document, '.sources-search__input').value);
+    }
+
+    public filter(query: string): void {
+        const normalized = query.trim().toLowerCase();
+        let visible = 0;
+
+        this.items.forEach((item) => {
+            const isMatch = (item.textContent ?? '').toLowerCase().includes(normalized);
+
+            item.hidden = !isMatch;
+            if (isMatch) visible += 1;
+        });
+
+        getElement(document, '.sources-search__status').textContent = this.getStatusText(visible, query.trim());
+    }
+
+    private getStatusText(visible: number, query: string): string {
+        if (this.items.length === 0) return '';
+        if (visible === 0) return `No sources match "${query}"`;
+        if (query) return `${visible} of ${this.items.length} sources`;
+
+        return `${this.items.length} sources`;
     }
 }
 
