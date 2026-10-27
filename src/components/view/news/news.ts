@@ -41,19 +41,22 @@ class News {
             fragment.append(newsClone);
         });
 
-        const newsContainer = getElement(document, '.news');
-        newsContainer.innerHTML = '';
-        newsContainer.appendChild(fragment);
+        this.render(fragment);
     }
 
     private drawMessage(text: string): void {
         const message = document.createElement('p');
         message.className = 'news__message';
+        message.setAttribute('role', 'status');
         message.textContent = text;
 
+        this.render(message);
+    }
+
+    private render(content: Node): void {
         const newsContainer = getElement(document, '.news');
         newsContainer.innerHTML = '';
-        newsContainer.appendChild(message);
+        newsContainer.appendChild(content);
     }
 }
 

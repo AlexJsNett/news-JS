@@ -13,16 +13,16 @@ class AppController extends AppLoader {
 
     public getNews(e: Event, callback: Callback<ArticlesResponse>): void {
         let target = e.target;
-        const newsContainer = e.currentTarget;
+        const sourcesContainer = e.currentTarget;
 
-        if (!(newsContainer instanceof HTMLElement)) return;
+        if (!(sourcesContainer instanceof HTMLElement)) return;
 
-        while (target instanceof HTMLElement && target !== newsContainer) {
+        while (target instanceof HTMLElement && target !== sourcesContainer) {
             if (target.classList.contains('source__item')) {
                 const sourceId = target.getAttribute('data-source-id');
-                if (sourceId && newsContainer.getAttribute('data-source') !== sourceId) {
-                    newsContainer.setAttribute('data-source', sourceId);
-                    newsContainer
+                if (sourceId && sourcesContainer.getAttribute('data-source') !== sourceId) {
+                    sourcesContainer.setAttribute('data-source', sourceId);
+                    sourcesContainer
                         .querySelectorAll('.source__item[aria-pressed="true"]')
                         .forEach((item) => item.setAttribute('aria-pressed', 'false'));
                     target.setAttribute('aria-pressed', 'true');
