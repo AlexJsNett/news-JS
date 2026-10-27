@@ -3,11 +3,17 @@ import { Article } from '../../../types';
 import { getElement } from '../../../utils/dom';
 
 const MAX_NEWS_COUNT = 10;
+const EMPTY_MESSAGE = 'No articles found for this source';
 const PLACEHOLDER_IMAGE = 'img/news_placeholder.jpg';
 
 class News {
     public draw(data: Article[]): void {
         const news = data.slice(0, MAX_NEWS_COUNT);
+
+        if (news.length === 0) {
+            this.drawMessage(EMPTY_MESSAGE);
+            return;
+        }
 
         const fragment = document.createDocumentFragment();
         const newsItemTemp = getElement<HTMLTemplateElement>(document, '#newsItemTemp');
@@ -38,6 +44,16 @@ class News {
         const newsContainer = getElement(document, '.news');
         newsContainer.innerHTML = '';
         newsContainer.appendChild(fragment);
+    }
+
+    private drawMessage(text: string): void {
+        const message = document.createElement('p');
+        message.className = 'news__message';
+        message.textContent = text;
+
+        const newsContainer = getElement(document, '.news');
+        newsContainer.innerHTML = '';
+        newsContainer.appendChild(message);
     }
 }
 
