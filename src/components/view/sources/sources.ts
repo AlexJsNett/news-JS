@@ -2,8 +2,15 @@ import './sources.css';
 import { NewsSource } from '../../../types';
 import { getElement } from '../../../utils/dom';
 
+const SCROLL_EDGE_PX = 4;
+
 class Sources {
     private items: HTMLElement[] = [];
+
+    constructor() {
+        window.addEventListener('resize', () => this.updateScrollHint());
+        getElement(document, '.sources').addEventListener('scroll', () => this.updateScrollHint(), { passive: true });
+    }
 
     public draw(data: NewsSource[]): void {
         const fragment = document.createDocumentFragment();
@@ -36,6 +43,15 @@ class Sources {
         });
 
         getElement(document, '.sources-search__status').textContent = this.getStatusText(visible, query.trim());
+        this.updateScrollHint();
+    }
+
+    private updateScrollHint(): void {
+        const container = getElement(document, '.sources');
+        const hasMoreRight = container.scrollLeft + container.clientWidth < container.scrollWidth - SCROLL_EDGE_PX;
+        const hasMoreBelow = container.scrollTop + container.clientHeight < container.scrollHeight - SCROLL_EDGE_PX;
+
+        container.dataset.more = String(hasMoreRight || hasMoreBelow);
     }
 
     private getStatusText(visible: number, query: string): string {
