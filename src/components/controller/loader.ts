@@ -27,13 +27,14 @@ class Loader {
 
     private makeUrl(options: Partial<QueryOptions>, endpoint: string): string {
         const urlOptions: Partial<QueryOptions> = { ...this.options, ...options };
-        let url = `${this.baseLink}${endpoint}?`;
+        const params = new URLSearchParams();
 
         (Object.keys(urlOptions) as Array<keyof QueryOptions>).forEach((key) => {
-            url += `${key}=${urlOptions[key]}&`;
+            const value = urlOptions[key];
+            if (value !== undefined) params.append(key, value);
         });
 
-        return url.slice(0, -1);
+        return `${this.baseLink}${endpoint}?${params.toString()}`;
     }
 
     private load<T>(
