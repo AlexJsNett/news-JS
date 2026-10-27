@@ -17,3 +17,7 @@ News portal on TypeScript, migrated from the original JavaScript app. Data comes
 - `npm run lint` — ESLint with `typescript-eslint`
 - `npm run typecheck` — `tsc --noEmit` with `strict`
 - `npm run deploy` — build and publish `dist` to `gh-pages`
+
+## Caching
+
+`Loader` caches API responses in memory and in `sessionStorage` to save the News API request limit: sources for 60 minutes, news for 10 minutes. Failed requests are not cached.
