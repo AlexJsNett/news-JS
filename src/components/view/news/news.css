@@ -26,9 +26,11 @@
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.news__item:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px -12px rgba(105, 219, 126, 0.45);
+@media (hover: hover) {
+    .news__item:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px -12px rgba(105, 219, 126, 0.45);
+    }
 }
 
 .news__item:hover .news__meta-photo {
@@ -154,7 +156,8 @@
     border-radius: 3px;
 }
 
-.news__item:hover .news__meta-details {
+.news__item:hover .news__meta-details,
+.news__item:focus-within .news__meta-details {
     left: 0%;
 }
 
